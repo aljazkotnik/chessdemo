@@ -10,13 +10,14 @@
   },
   "author": "Aljaz Kotnik",
   "license": "MIT",
-  "main_used": "public/dist/chessdemo.js", 
+  "main_used": "public/dist/chessdemo.js",
   "main": "public/dist/chessdemo.cjs.js",
   "module": "public/dist/chessdemo.esm.js",
   "browser": "public/dist/chessdemo.umd.js",
   "dependencies": {
     "d3": "^6.7.0",
-    "mobx": "^6.2.0"
+    "mobx": "^6.3.0",
+    "node": "^16.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",

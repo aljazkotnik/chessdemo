@@ -11,12 +11,25 @@
   <link rel="stylesheet" href="/style/app.css">  
   <link rel="stylesheet" href="/style/fonts/roboto-condensed/roboto-condensed.css">
   <link rel="stylesheet" href="/style/fonts/fontawesome/font-awesome_4.7.0.min.css">
+  
+  <!-- Chess board and pieces -->
+  <link rel="stylesheet" href="/style/chessground.css">
+  
+  
+  <!-- d3 only for dev options! -->
+  <script src="https://d3js.org/d3.v6.min.js"></script>
 	
 </head>
 
 <body>
   <div id="app"></div>
-  <script src='/dist/chessdemo.js'></script>
+  <button id="ply" class="btn-small">Ply</button>
+  <div id="tabletop"></div>
+  
+  
+  <script src='/dist/chessdemo.js'></script>  
+  
+  
 </body>
 
 </html>

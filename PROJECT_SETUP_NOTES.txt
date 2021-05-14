@@ -8,6 +8,11 @@ Several steps need to be made when deploying the code to older browsers:
 	- bundling (combining all javascript needed into a single file): this is generally useful as it also allows the code to be minified for faster loading. Bunding is not strictly necessary, but useful.
 	- transpiling (transcribing + compiling = transcribing = rewriting the code into a version of javascript supported by some older browser): this IS required when deploying to older browsers.
 	- polyfilling (adding in additional needed functions instead of just rewriting existing ones): Array.includes, Promise.allSettled,... require polyfills. These can apparently be added in many places - the code itself, but probably it's best to somehow include them in babel. 
+
+
+DEVELOPMENT:
+It's best to just develop the final outcome. The bundled and transpiled code will be difficult to use during debugging. Using a 'sourcemap' helps during debugging, as it shows where the error is in the original code. This way we can work on the end product while using the source files.
+
 	
 OVERVIEW:
 
