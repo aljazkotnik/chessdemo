@@ -11,7 +11,7 @@ export default class dragdiv {
 		
 		// Absolute or relative position??
 		obj.div = d3.create("div")
-		  .style("position", "relative")
+		  .style("position", "absolute")
 		  .style("left", 0 + "px")
 		  .style("top", 0 + "px");
 		
@@ -21,11 +21,15 @@ export default class dragdiv {
 		// Apply dragging to it. Store the movement data on the dragdiv object instead? So as to not pollute the actual object?
 		let dragobj = d3.drag()
 			.on("start", function(event){
+				obj.div.raise();
 				obj.mouseorigin = obj.mouseposition(event)
 			})
 			.on("drag", function(event){
 				// let position = obj.position()
 				let movement = obj.movement(event)
+				
+				// Rounding positions to full pixel value hasn't helped much. Maybe it's the css holding everything back?
+				
 				
 				// Move the wrapper.
 				obj.div

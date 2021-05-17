@@ -3112,15 +3112,17 @@
 
       var obj = this; // Absolute or relative position??
 
-      obj.div = create$1("div").style("position", "relative").style("left", 0 + "px").style("top", 0 + "px"); // Container that will hold the mouse coordinates.
+      obj.div = create$1("div").style("position", "absolute").style("left", 0 + "px").style("top", 0 + "px"); // Container that will hold the mouse coordinates.
 
       obj.mouseorigin = {}; // Apply dragging to it. Store the movement data on the dragdiv object instead? So as to not pollute the actual object?
 
       var dragobj = drag().on("start", function (event) {
+        obj.div.raise();
         obj.mouseorigin = obj.mouseposition(event);
       }).on("drag", function (event) {
         // let position = obj.position()
-        var movement = obj.movement(event); // Move the wrapper.
+        var movement = obj.movement(event); // Rounding positions to full pixel value hasn't helped much. Maybe it's the css holding everything back?
+        // Move the wrapper.
 
         obj.div.style("left", obj.position.x + movement.x + "px").style("top", obj.position.y + movement.y + "px"); // Update the last mouse position
 
@@ -12755,12 +12757,14 @@
     });
   }
 
+  // Let's see if I can make a custom chess sprite now.
+
   var chesssprite = /*#__PURE__*/function (_sprite) {
     _inherits(chesssprite, _sprite);
 
     var _super = _createSuper(chesssprite);
 
-    function chesssprite(game) {
+    function chesssprite(game, datahandler) {
       var _this;
 
       _classCallCheck(this, chesssprite); // `game' contains some metadata, and the pgn in game.Game.
@@ -12785,20 +12789,21 @@
       obj.plyind = -1; // The first increment will make plyind=0, which is the first index of an array.
       // Configure the chess board renderer.
 
-      obj.config = {
+      obj.board = Chessground(drawdiv.node(), {
         viewOnly: true
-      };
-      obj.board = Chessground(drawdiv.node(), obj.config); // Make the class observable.
+      }); // Make the class observable.
 
       makeObservable(obj, {
+        ply: action,
         fen: observable,
-        ply: action
+        data: computed
       });
       autorun(function () {
         obj.render();
       });
       return _this;
     } // constructor
+    // Basic functionality.
 
 
     _createClass$1(chesssprite, [{
@@ -12810,6 +12815,58 @@
           fen: obj.fen
         });
       } // render
+
+    }, {
+      key: "data",
+      get: function get() {
+        // Find the pawn positions in the fen.
+        var obj = this; // COMPUTED VALUE!!
+
+        var fen = obj.fen; // this is the observed value!
+        // Each of the 16 dimensions is a file for one side. Since FEN notation begins with rank 8
+
+        var emptystructure = [];
+
+        for (var i = 0; i < 16; i++) {
+          emptystructure.push([]);
+        } // for
+
+
+        var pawnstructure = fen.split(" ")[0].split("/").reduce(function (a, pieces, row) {
+          var col = 0;
+
+          var vals = _toConsumableArray(pieces);
+
+          vals.forEach(function (v) {
+            var v_ = parseInt(v);
+
+            if (v_) {
+              // Empty squares
+              col += v_;
+            } else {
+              // Some piece.
+              switch (v) {
+                case "P":
+                  // White pieces.
+                  a[col].push(7 - row);
+                  break;
+
+                case "p":
+                  // Black pieces.
+                  a[8 + col].push(7 - row);
+                  break;
+              } // switch
+
+
+              col += 1;
+            } // if
+
+          });
+          return a;
+        }, emptystructure);
+        return pawnstructure;
+      } // get data
+      // Specific functionality.
 
     }, {
       key: "ply",
@@ -12850,23 +12907,32 @@
     state.games.forEach(function (game) {
       game.ply();
     });
-  }); // What should be observable here? I guess the ply number? How to make independent modules using mobX?
-  // Wrap the chess game further. Put it into a card that can be dragged around, and move the ply button elsewhere - to the header.
-
-  var annotatedgamefile = "./data/lichess_study_kasparov-vs-topalov-1999-annotated_kasparov-g_custom.json";
-  d3.json(annotatedgamefile).then(function (game) {
-    var sprite = new chesssprite(game);
-    state.games.push(sprite); // Finally add the sprite to the container.
-
-    var container = document.getElementById("tabletop");
-    container.appendChild(sprite.node);
-  }); // Make another module which creates a draggable div into which the graphic can be placed?
-
+  });
+  var container = document.getElementById("tabletop");
   /*
-  d3.json("./data/lichess_db_subset.json").then( json => {
-  	console.log(json)
-  })
+  // Wrap the chess game further. Put it into a card that can be dragged around, and move the ply button elsewhere - to the header.
+  let annotatedgamefile = "./data/lichess_study_kasparov-vs-topalov-1999-annotated_kasparov-g_custom.json"
+  d3.json(annotatedgamefile).then(function(game){
+  	let sprite = new chesssprite(game);
+  	state.games.push(sprite)
+  	
+  	// Finally add the sprite to the container.
+  	container.appendChild(sprite.node)
+  }) // then
   */
+  // Make another module which creates a draggable div into which the graphic can be placed?
+
+  d3.json("./data/lichess_db_subset.json").then(function (json) {
+    // make 10 sprites - should be enough to test making groups etc.
+    for (var i = 0; i < 10; i++) {
+      var sprite = new chesssprite(json.games[i]);
+      state.games.push(sprite);
+      container.appendChild(sprite.node);
+    } // for
+
+
+    console.log(state.games);
+  }); // then
 
 }());
 //# sourceMappingURL=chessdemo.js.map

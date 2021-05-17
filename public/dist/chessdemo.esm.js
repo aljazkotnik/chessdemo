@@ -1,5 +1,5 @@
 import * as d3$1 from 'd3';
-import { makeObservable, observable, action, autorun } from 'mobx';
+import { makeObservable, action, observable, computed, autorun } from 'mobx';
 
 // Formulate this as a class? The it can be called as:
 // A = new dragdiv() ...
@@ -12,7 +12,7 @@ class dragdiv {
 		
 		// Absolute or relative position??
 		obj.div = d3$1.create("div")
-		  .style("position", "relative")
+		  .style("position", "absolute")
 		  .style("left", 0 + "px")
 		  .style("top", 0 + "px");
 		
@@ -22,11 +22,15 @@ class dragdiv {
 		// Apply dragging to it. Store the movement data on the dragdiv object instead? So as to not pollute the actual object?
 		let dragobj = d3$1.drag()
 			.on("start", function(event){
+				obj.div.raise();
 				obj.mouseorigin = obj.mouseposition(event);
 			})
 			.on("drag", function(event){
 				// let position = obj.position()
 				let movement = obj.movement(event);
+				
+				// Rounding positions to full pixel value hasn't helped much. Maybe it's the css holding everything back?
+				
 				
 				// Move the wrapper.
 				obj.div
@@ -3900,11 +3904,11 @@ function Chess(fen) {
 // We're making a sprite, so first import that.
 
 
-
+// IMPLEMENT DATA HANDLER!!
 
 // Let's see if I can make a custom chess sprite now.
 class chesssprite extends sprite {
-	constructor(game){
+	constructor(game, datahandler){
 		// `game' contains some metadata, and the pgn in game.Game.
 		
 		
@@ -3934,16 +3938,15 @@ class chesssprite extends sprite {
 		
 
 		// Configure the chess board renderer.
-		obj.config = {viewOnly: true};
-		
-		obj.board = Chessground(drawdiv.node(), obj.config);
+		obj.board = Chessground(drawdiv.node(), {viewOnly: true});
 		
 		
 		
 		// Make the class observable.
 		makeObservable(obj, {
+            ply: action,
 			fen: observable,
-            ply: action
+			data: computed
         });
 		
 		
@@ -3952,6 +3955,8 @@ class chesssprite extends sprite {
 		
 	} // constructor
 	
+	
+	// Basic functionality.
 	render(){
 		var obj = this;
 		
@@ -3962,6 +3967,58 @@ class chesssprite extends sprite {
 	} // render
 	
 	
+	get data(){
+		// Find the pawn positions in the fen.
+		let obj = this;
+		// COMPUTED VALUE!!
+		let fen = obj.fen; // this is the observed value!
+		
+		// Each of the 16 dimensions is a file for one side. Since FEN notation begins with rank 8
+		let emptystructure = [];
+		for(let i=0; i<16; i++){
+			emptystructure.push([]);
+		} // for
+
+		let pawnstructure = fen
+		  .split(" ")[0]
+		  .split("/")
+		  .reduce((a,pieces,row)=>{
+			let col = 0;
+			let vals = [...pieces];
+			vals.forEach(v=>{
+				let v_ = parseInt(v);
+				if(v_){
+					// Empty squares
+					col += v_;
+				} else {
+					// Some piece.
+					
+					switch(v){
+						case "P":
+							// White pieces.
+							a[  col].push(7-row);
+							break;
+						case "p":
+							// Black pieces.
+							a[8+col].push(7-row);
+							break;
+					} // switch
+				
+					col += 1;
+				} // if
+			});
+			
+			return a
+		},emptystructure);
+		
+		
+		return pawnstructure
+		
+		
+	} // get data
+	
+	
+	// Specific functionality.
 	ply(){
 		// This increments the plyind. I could then even make a computed value of `fen`, and only then ask the rerender.
 		var obj = this;
@@ -4013,33 +4070,35 @@ d3.select("#ply").on("click", () => {
 });
 
 
-// What should be observable here? I guess the ply number? How to make independent modules using mobX?
-  
+
+let container = document.getElementById("tabletop");
 
 
+/*
 // Wrap the chess game further. Put it into a card that can be dragged around, and move the ply button elsewhere - to the header.
-let annotatedgamefile = "./data/lichess_study_kasparov-vs-topalov-1999-annotated_kasparov-g_custom.json";
+let annotatedgamefile = "./data/lichess_study_kasparov-vs-topalov-1999-annotated_kasparov-g_custom.json"
 d3.json(annotatedgamefile).then(function(game){
-	
-	
 	let sprite = new chesssprite(game);
-	state.games.push(sprite);
-	
-
+	state.games.push(sprite)
 	
 	// Finally add the sprite to the container.
-	let container = document.getElementById("tabletop");
-	container.appendChild(sprite.node);
-
-	
-
-});
-
+	container.appendChild(sprite.node)
+}) // then
+*/
 
 // Make another module which creates a draggable div into which the graphic can be placed?
 
-/*
+
 d3.json("./data/lichess_db_subset.json").then( json => {
-	console.log(json)
-})
-*/
+	
+	
+	// make 10 sprites - should be enough to test making groups etc.
+	for(let i=0; i<10; i++){
+		let sprite = new chesssprite(json.games[i]);
+		state.games.push( sprite );
+		container.appendChild(sprite.node);
+	} // for
+	
+	
+	console.log(state.games);
+}); // then
