@@ -22,9 +22,6 @@ export default class sprite {
   constructor(){
 	let obj = this;
 	
-	
-	obj.graphic = undefined;
-
 
 	// Currently no on drag-start/move/end functionality is prescribed. But it will be needed for webgl sprites, as a canvas element will have to be added to the sprite to contain the dragged sprite. Furthermore the main canvas will have to be redrawn on start and end. This would have to be passed in somehow, and it should collect the object along the way too. Maybe the dragdiv should just execute any onstart that it can find? maybe the event was only visible because there was no data object attached to the div yet?
 	let div = new dragdiv();

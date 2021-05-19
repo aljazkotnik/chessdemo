@@ -1,0 +1,27 @@
+/* TREE ELEMENTS */
+text {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+text:hover {
+  font-size: 12px;
+}
+
+.node {
+  stroke-linecap: round;
+}
+
+.node-outline {
+  cursor: pointer;
+}
+
+.node-outline:hover {
+	stroke-width: 10;
+}
+
+
+.link {
+  fill: none;
+}

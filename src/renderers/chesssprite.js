@@ -21,13 +21,19 @@ import {makeObservable, observable, autorun, action, computed} from "mobx";
 
 // Let's see if I can make a custom chess sprite now.
 export default class chesssprite extends sprite {
-	constructor(game, datahandler){
+	constructor(game){
 		// `game' contains some metadata, and the pgn in game.Game.
 		
 		
 		// Construct a basic sprite.
 		super()
 		let obj = this;
+		
+		
+		// Store the game metadata. Create a unique ID for the task too. Maybe players + time and date? Lichess enforces unique user names, and two users can only start a single game at a time
+		game.id = `${ game.White } vs. ${ game.Black }, ${ game.UTCDate } at ${ game.UTCTime }`;
+		obj.task = game;
+		
 		
 		
 		// Add a chessboard into the scene element. `.chessboard' is defined in the `chessground.css', and defines the initial size of the board in pixel.

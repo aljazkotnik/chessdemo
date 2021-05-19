@@ -1,0 +1,86 @@
+
+{"trees": [
+	
+	{ "author": "Milan", "nodes": [
+		{"id": "root", "tasks":[
+			"BFG9k vs. mamalak, 2012.12.31 at 23:01:03",
+			"Desmond_Wilson vs. savinka59, 2012.12.31 at 23:04:12",
+			"Kozakmamay007 vs. VanillaShamanilla, 2012.12.31 at 23:03:15",
+			"Naitero_Nagasaki vs. 800, 2012.12.31 at 23:04:57",
+			"nichiren1967 vs. Naitero_Nagasaki, 2012.12.31 at 23:02:37",
+			"sport vs. shamirbj, 2012.12.31 at 23:09:21",
+			"tiggran vs. arion_6, 2012.12.31 at 23:02:14",
+			"hostking vs. troepianiz, 2012.12.31 at 23:06:10",
+			"manos68 vs. jtkjtkful, 2012.12.31 at 23:03:50",
+			"adamsrj vs. hamiakaz, 2012.12.31 at 23:02:48"
+		], "description": "This is the starting state and includes all tasks."},
+		
+		{"id": "Feature 1", "parents": ["root"], "tasks": [
+			"BFG9k vs. mamalak, 2012.12.31 at 23:01:03",
+			"Desmond_Wilson vs. savinka59, 2012.12.31 at 23:04:12",
+			"Kozakmamay007 vs. VanillaShamanilla, 2012.12.31 at 23:03:15"
+		], "description": "This is a completely arbitrary group"},
+		{"id": "Feature 2", "parents": ["root"], "tasks": [
+			"Naitero_Nagasaki vs. 800, 2012.12.31 at 23:04:57",
+			"nichiren1967 vs. Naitero_Nagasaki, 2012.12.31 at 23:02:37",
+			"sport vs. shamirbj, 2012.12.31 at 23:09:21",
+			"tiggran vs. arion_6, 2012.12.31 at 23:02:14"
+		], "description": "I don't think Aljaz ensured the data makes sense."},
+		{"id": "Feature 3", "parents": ["root"], "tasks": [
+			"hostking vs. troepianiz, 2012.12.31 at 23:06:10",
+			"manos68 vs. jtkjtkful, 2012.12.31 at 23:03:50",
+			"adamsrj vs. hamiakaz, 2012.12.31 at 23:02:48"
+		]},
+		
+		{"id": "Study 1", "parents": ["Feature 1"], "tasks": [
+			"BFG9k vs. mamalak, 2012.12.31 at 23:01:03",
+			"Desmond_Wilson vs. savinka59, 2012.12.31 at 23:04:12"
+		]},
+		{"id": "Blunders", "parents": ["Feature 1"], "tasks": [
+			"Kozakmamay007 vs. VanillaShamanilla, 2012.12.31 at 23:03:15"
+		]}
+	]},
+	
+	
+	
+	{ "author": "Vasja", "nodes": [
+		{"id": "root", "tasks": [
+			"BFG9k vs. mamalak, 2012.12.31 at 23:01:03",
+			"Desmond_Wilson vs. savinka59, 2012.12.31 at 23:04:12",
+			"Kozakmamay007 vs. VanillaShamanilla, 2012.12.31 at 23:03:15",
+			"Naitero_Nagasaki vs. 800, 2012.12.31 at 23:04:57",
+			"nichiren1967 vs. Naitero_Nagasaki, 2012.12.31 at 23:02:37",
+			"sport vs. shamirbj, 2012.12.31 at 23:09:21",
+			"tiggran vs. arion_6, 2012.12.31 at 23:02:14",
+			"hostking vs. troepianiz, 2012.12.31 at 23:06:10",
+			"manos68 vs. jtkjtkful, 2012.12.31 at 23:03:50",
+			"adamsrj vs. hamiakaz, 2012.12.31 at 23:02:48"
+		]},
+		
+		
+		{"id": "Feature 2", "parents": ["root"], "tasks": [
+			"Naitero_Nagasaki vs. 800, 2012.12.31 at 23:04:57",
+			"nichiren1967 vs. Naitero_Nagasaki, 2012.12.31 at 23:02:37",
+			"sport vs. shamirbj, 2012.12.31 at 23:09:21",
+			"tiggran vs. arion_6, 2012.12.31 at 23:02:14"
+		], "description": "Yes, I wish Aljaz actually made this demo make sense."},
+		
+		
+		{"id": "Inaccurate plays", "parents": ["root"], "tasks": [
+			"BFG9k vs. mamalak, 2012.12.31 at 23:01:03",
+			"Desmond_Wilson vs. savinka59, 2012.12.31 at 23:04:12",
+			"Kozakmamay007 vs. VanillaShamanilla, 2012.12.31 at 23:03:15",
+			"hostking vs. troepianiz, 2012.12.31 at 23:06:10",
+			"manos68 vs. jtkjtkful, 2012.12.31 at 23:03:50",
+			"adamsrj vs. hamiakaz, 2012.12.31 at 23:02:48"
+		]}
+		
+	]}
+
+	
+	
+	
+	
+	
+
+]}
